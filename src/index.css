@@ -563,6 +563,7 @@ footer{
   .balance-col{padding:24px;}
   .balance-col:first-child{border-right:none;border-bottom:1px solid var(--glass-border);}
   .projects-grid{grid-template-columns:1fr;}
+  .project-card:last-child:nth-child(odd){max-width:100%;}
   .project-card{padding:24px 22px;}
   .proj-tags{flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;}
   .proj-tags::-webkit-scrollbar{display:none;}
