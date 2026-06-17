@@ -446,7 +446,8 @@ h1 em{font-style:italic;color:var(--gold);}
 }
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .arch-modal{
-  background:var(--bg-card);border:1px solid var(--gold-soft);
+  background:rgba(11,14,20,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--gold-soft);
   box-shadow:0 0 50px -10px rgba(212,168,87,0.15);
   border-radius:12px;width:100%;max-width:680px;max-height:90vh;
   overflow-y:auto;position:relative;
