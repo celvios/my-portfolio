@@ -304,50 +304,127 @@ const Approach = () => {
   );
 };
 
+const ArchitectureModal = ({ project, onClose }) => {
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
+  if (!project) return null;
+
+  return (
+    <div className="arch-overlay" onClick={onClose}>
+      <div className={`arch-modal ${project.cobalt ? 'cobalt' : ''}`} onClick={e => e.stopPropagation()} ref={modalRef}>
+        <button className="arch-close" onClick={onClose} aria-label="Close modal">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div className="arch-header">
+          <span className="arch-domain">{project.domain}</span>
+          <h3>{project.title}</h3>
+        </div>
+        <div className="arch-content">
+          <div className="arch-section">
+            <h4>SYSTEM OVERVIEW</h4>
+            <p>{project.architecture.overview}</p>
+          </div>
+          <div className="arch-section">
+            <h4>DATA FLOW</h4>
+            <div className="arch-flow">
+              {project.architecture.flow.map((step, i) => (
+                <div key={i} className="flow-step">
+                  <span className="flow-box">{step}</span>
+                  {i < project.architecture.flow.length - 1 && <div className="flow-arrow">↓</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="arch-section">
+            <h4>TECHNICAL STACK</h4>
+            <div className="proj-tags">
+              {project.tags.map(t => <span key={t} className="proj-tag">{t}</span>)}
+            </div>
+          </div>
+        </div>
+        <div className="arch-footer">
+          <a href={project.github} target="_blank" rel="noreferrer" className="arch-btn">&gt;_ VIEW SOURCE CODE</a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const PROJECTS = [
   {
     id: 'DEPLOY-001',
     title: 'AsterDex — APEX Protocol',
     desc: 'Autonomous DeFi yield protocol on BNB Chain with an on-chain "APEXBrain" regime engine that dynamically splits capital across staking and buffer strategies to hedge impermanent loss.',
-    tags: ['Solidity', 'Next.js 14', 'The Graph', 'Wagmi v2', 'ERC-4626'],
+    tags: ['Python', 'Node.js', 'Solidity', 'The Graph', 'Next.js 14'],
     domain: 'DEFI · BNB CHAIN',
+    github: 'https://github.com/celvios/asterdex',
     cobalt: false,
+    architecture: {
+      overview: 'Engineered the "APEXBrain" regime engine to autonomously hedge against impermanent loss. Scaled backend API endpoints to securely process $150,000+ in trading volume within 4 months.',
+      flow: ['User (Next.js DApp)', 'Node.js API Gateway', 'Python Ingestion Engine (The Graph)', 'Solidity Smart Contracts (BNB Chain)'],
+    }
   },
   {
     id: 'DEPLOY-002',
     title: 'OPoll Social',
     desc: 'Web3 social prediction platform with binary and multi-outcome markets, real-time order books, live video streaming, and embedded wallet authentication via Privy.',
-    tags: ['Next.js 14', 'Privy Auth', 'Socket.io', 'Wagmi v2', 'Zustand'],
+    tags: ['Next.js 14', 'Privy Auth', 'Socket.io', 'Wagmi v2', 'Python'],
     domain: 'WEB3 · SOCIAL',
+    github: 'https://github.com/celvios/opoll',
     cobalt: true,
+    architecture: {
+      overview: 'Developed a Web3 social prediction platform featuring real-time order books, multi-outcome markets, and live data streaming via WebSockets.',
+      flow: ['User (Next.js + Privy)', 'WebSocket Server (Socket.io)', 'Python Backend Engine', 'PostgreSQL / Smart Contracts'],
+    }
   },
   {
     id: 'DEPLOY-003',
     title: 'Summit Building Products',
     desc: 'Enterprise Salesforce implementation spanning Loyalty Management, Rebate Management, Warranty Lifecycle, and an Experience Cloud contractor portal with role-based access control.',
-    tags: ['Salesforce SFDX', 'Apex', 'LWC', 'DPE', 'DocuSign API'],
+    tags: ['Salesforce Apex', 'LWC', 'Python', 'Node.js'],
     domain: 'ENTERPRISE · CRM',
+    github: 'https://github.com/celvios/summit-building',
     cobalt: false,
+    architecture: {
+      overview: 'Led an enterprise Salesforce implementation spanning Loyalty, Rebate, and Warranty management, integrating custom Python APIs to automate high-volume data workflows.',
+      flow: ['Contractor (Experience Cloud)', 'Lightning Web Components (LWC)', 'Salesforce Apex Triggers', 'Python Integration API'],
+    }
   },
   {
     id: 'DEPLOY-004',
     title: 'Aster Circuit',
     desc: 'Production-grade multi-chain token system using LayerZero V2 cross-chain messaging, OFT standards, and UUPS upgradeable proxy patterns deployed across BSC, Base, Ethereum, Sonic, and Polygon.',
-    tags: ['Solidity', 'Foundry', 'LayerZero V2', 'OpenZeppelin', 'CREATE2'],
+    tags: ['Go', 'Node.js', 'LayerZero V2', 'Solidity'],
     domain: 'WEB3 · MULTI-CHAIN',
+    github: 'https://github.com/celvios/aster-circuit',
     cobalt: true,
+    architecture: {
+      overview: 'Architected a production-grade multi-chain token system using LayerZero V2, deploying upgradeable proxy patterns across BSC, Base, Ethereum, and Polygon.',
+      flow: ['Cross-Chain Request', 'LayerZero V2 Endpoint', 'Go Relayer Node', 'Destination Smart Contract'],
+    }
   },
   {
     id: 'DEPLOY-005',
-    title: 'Limiance Launchpad',
-    desc: 'Web3 IDO token launchpad on Binance Smart Chain with smart contract-gated presale pools, vesting schedules, multi-tier whitelisting, and a Next.js investor dashboard.',
-    tags: ['Next.js 14', 'Solidity', 'BSC', 'Wagmi v2', 'Hardhat'],
-    domain: 'WEB3 · LAUNCHPAD',
+    title: 'Limiance Exchange & Launchpad',
+    desc: 'Web3 IDO token launchpad on Binance Smart Chain with smart contract-gated presale pools, vesting schedules, multi-tier whitelisting, and a core trading engine.',
+    tags: ['Go', 'Node.js', 'Solidity', 'Next.js'],
+    domain: 'WEB3 · TRADING',
+    github: 'https://github.com/celvios/limiance',
     cobalt: false,
+    architecture: {
+      overview: 'Engineered the core trading engine and liquidity pools for Limiance Exchange, alongside the backend infrastructure for the IDO Launchpad managing smart contract-gated presale pools and vesting schedules.',
+      flow: ['Investor Dashboard (Next.js)', 'Node.js Backend', 'Go Order Matching Engine', 'BSC Smart Contracts'],
+    }
   },
 ];
 
-const Projects = () => {
+const Projects = ({ onSelectProject }) => {
   const cardsRef = useRef([]);
 
   const handleMouseMove = e => {
@@ -392,7 +469,7 @@ const Projects = () => {
                 </div>
                 <div className="proj-footer">
                   <span className="proj-domain">{p.domain}</span>
-                  <span className="proj-btn">&gt;_ VIEW ARCHITECTURE</span>
+                  <button className="proj-btn" onClick={() => onSelectProject(p)}>&gt;_ VIEW ARCHITECTURE</button>
                 </div>
               </div>
             ))}
@@ -452,7 +529,7 @@ const Contact = () => {
     try {
       // TODO: Replace "YOUR_FORMSPREE_ENDPOINT" with your actual endpoint URL from formspree.io
       // Example: https://formspree.io/f/xqkjjvlw
-      const response = await fetch("YOUR_FORMSPREE_ENDPOINT", {
+      const response = await fetch("https://formspree.io/f/xnjyyjyj", {
         method: "POST",
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
@@ -510,6 +587,7 @@ const Contact = () => {
 
 function App() {
   const [currentBlock, setCurrentBlock] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     // Intersection Observer for animations and block counting
@@ -572,9 +650,10 @@ function App() {
       <Hero />
       <Capabilities />
       <Approach />
-      <Projects />
+      <Projects onSelectProject={setSelectedProject} />
       <Expertise />
       <Contact />
+      <ArchitectureModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </>
   );
 }

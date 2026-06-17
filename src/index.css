@@ -435,6 +435,73 @@ h1 em{font-style:italic;color:var(--gold);}
   .projects-grid{grid-template-columns:1fr;}
 }
 
+/* ---------- architecture modal ---------- */
+.arch-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(8,10,15,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn 0.3s ease forwards;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.arch-modal{
+  background:var(--bg-card);border:1px solid var(--gold-soft);
+  box-shadow:0 0 50px -10px rgba(212,168,87,0.15);
+  border-radius:12px;width:100%;max-width:680px;max-height:90vh;
+  overflow-y:auto;position:relative;
+  padding:40px;
+  animation:slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.arch-modal.cobalt{
+  border-color:var(--cobalt-soft);box-shadow:0 0 50px -10px rgba(62,111,255,0.15);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+.arch-close{
+  position:absolute;top:20px;right:20px;
+  background:none;border:none;color:var(--muted);
+  cursor:pointer;padding:8px;border-radius:50%;
+  transition:background 0.2s, color 0.2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.arch-close:hover{background:rgba(255,255,255,0.05);color:var(--text);}
+
+.arch-domain{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.1em;display:block;margin-bottom:8px;}
+.arch-modal.cobalt .arch-domain{color:var(--cobalt);}
+.arch-header h3{font-family:'Fraunces',serif;font-weight:480;font-size:32px;line-height:1.1;margin-bottom:30px;color:var(--text);}
+
+.arch-section{margin-bottom:30px;}
+.arch-section h4{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted-dim);letter-spacing:0.08em;margin-bottom:12px;border-bottom:1px solid var(--glass-border);padding-bottom:8px;}
+.arch-section p{color:var(--muted);line-height:1.7;font-size:15px;}
+
+.arch-flow{display:flex;flex-direction:column;gap:12px;margin-top:16px;}
+.flow-step{display:flex;flex-direction:column;align-items:center;}
+.flow-box{
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  padding:12px 20px;border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;background:rgba(255,255,255,0.02);
+  color:var(--text);text-align:center;width:100%;max-width:400px;
+}
+.flow-arrow{color:var(--muted-dim);font-size:16px;margin-top:8px;}
+
+.arch-footer{margin-top:40px;padding-top:30px;border-top:1px solid var(--glass-border);text-align:center;}
+.arch-btn{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.04em;
+  padding:14px 28px;border-radius:8px;background:var(--gold-soft);
+  color:var(--gold);border:1px solid rgba(212,168,87,0.3);
+  text-decoration:none;transition:transform 0.2s, box-shadow 0.2s;
+}
+.arch-modal.cobalt .arch-btn{
+  background:var(--cobalt-soft);color:var(--cobalt);border-color:rgba(62,111,255,0.3);
+}
+.arch-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px -10px rgba(212,168,87,0.4);}
+.arch-modal.cobalt .arch-btn:hover{box-shadow:0 8px 20px -10px rgba(62,111,255,0.4);}
+
+@media (max-width:600px){
+  .arch-modal{padding:30px 20px;}
+  .arch-header h3{font-size:26px;}
+}
+
 /* ---------- contact ---------- */
 .contact{padding:80px 0 60px;}
 .contact-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:start;}
