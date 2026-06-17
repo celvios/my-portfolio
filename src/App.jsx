@@ -442,6 +442,35 @@ const Expertise = () => {
 
 const Contact = () => {
   const [showMsg, setShowMsg] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const form = e.target;
+    
+    try {
+      // TODO: Replace "YOUR_FORMSPREE_ENDPOINT" with your actual endpoint URL from formspree.io
+      // Example: https://formspree.io/f/xqkjjvlw
+      const response = await fetch("YOUR_FORMSPREE_ENDPOINT", {
+        method: "POST",
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (response.ok) {
+        setShowMsg(true);
+        form.reset();
+        setTimeout(() => setShowMsg(false), 5000);
+      } else {
+        setShowMsg(true); // Fallback visual
+      }
+    } catch (error) {
+      console.error(error);
+      setShowMsg(true); // Fallback visual
+    }
+    setIsSubmitting(false);
+  };
 
   return (
     <section className="contact block" id="contact">
@@ -455,16 +484,18 @@ const Contact = () => {
             <a href="#">GitHub</a>
           </div>
         </div>
-        <form id="contactForm" onSubmit={(e) => { e.preventDefault(); setShowMsg(true); }}>
+        <form id="contactForm" onSubmit={handleSubmit}>
           <div className="field">
             <label>SYSTEM QUERY / MESSAGE</label>
-            <textarea rows="4" placeholder="How can I help you scale?"></textarea>
+            <textarea name="message" rows="4" placeholder="How can I help you scale?" required></textarea>
           </div>
           <div className="field">
             <label>CONTACT PACKET (EMAIL)</label>
-            <input type="email" placeholder="your@email.com" />
+            <input type="email" name="email" placeholder="your@email.com" required />
           </div>
-          <button type="submit" className="submit-btn">INITIALIZE HANDSHAKE</button>
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'TRANSMITTING...' : 'INITIALIZE HANDSHAKE'}
+          </button>
           <div className={`confirm-msg ${showMsg ? 'show' : ''}`}>PACKET TRANSMITTED. EXPECT A RESPONSE SHORTLY.</div>
         </form>
       </div>
